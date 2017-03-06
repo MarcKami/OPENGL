@@ -64,7 +64,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//color de fondo
-		glClearColor(1.0, 1.0, 0.8, 1.0);
+		glClearColor(0.53, 0.8, 1.0, 1.0); //Azul Cielo
 
 		//definir la matriz de proyeccion
 		glMatrixMode(GL_PROJECTION);
@@ -78,7 +78,7 @@ int main() {
 		//para volver a dejar la rotacion parada
 		//glLoadIdentity();
 
-#if(true)
+#if(false)
 		//Points
 		glPointSize(20.f);
 		glColor3f(.0f, .0f, .0f);
@@ -185,6 +185,38 @@ int main() {
 
 
 #endif
+		//Activar culling
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CCW); //Defines the normal facing player
+
+		//Green Floor
+		glBegin(GL_QUADS);
+		glColor3f(0.0f, 0.5f, 0.0f); //Green Color
+		glVertex3f(-10.0f, 0.0f, 0.0f);
+		glVertex3f(-10.0f, -10.f, 0.0f);
+		glVertex3f(10.0f, -10.0f, 0.0f);
+		glVertex3f(10.0f, 0.0f, 0.0f);
+		glEnd();
+
+		//Draw Mountains
+		glBegin(GL_TRIANGLES);
+		glColor3f(0.5f, 0.27f, 0.07f);
+		glVertex3f(-12.0f, 0.0f, 0.0f); //Brown Color
+		glVertex3f(-5.0f, 0.0f, 0.0f);
+		glColor3f(1.0f, 1.0f, 1.0f); //White Color
+		glVertex3f(-7.0f, 4.0f, 0.0f);
+		glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor3f(0.5f, 0.27f, 0.07f);
+		glVertex3f(-7.5f, 0.0f, 0.0f); //Brown Color
+		glVertex3f(-2.0f, 0.0f, 0.0f);
+		glColor3f(1.0f, 1.0f, 1.0f); //White Color
+		glVertex3f(-4.0f, 4.0f, 0.0f);
+		glEnd();
+
+
+		glDisable(GL_CULL_FACE);
 
 		//intercambia el framebuffer
 		glfwSwapBuffers(window);
