@@ -190,6 +190,53 @@ int main() {
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CCW); //Defines the normal facing player
 
+		//Smile
+		glBegin(GL_POLYGON);
+		glColor3f(0.9f, 0.9f, .0f);
+		/*
+		glVertex3f(-9.0f, 9.0f, .0f);
+		glVertex3f(-8.9f, 8.9f, .0f);
+		glVertex3f(-8.8f, 8.8f, .0f);
+		glVertex3f(-8.7f, 8.7f, .0f);
+		glVertex3f(-8.6f, 8.6f, .0f);
+		glVertex3f(-8.5f, 8.5f, .0f);
+		glVertex3f(-8.4f, 8.4f, .0f);
+		glVertex3f(-8.3f, 8.3f, .0f);
+		glVertex3f(-8.2f, 8.2f, .0f);
+		glVertex3f(-8.1f, 8.1f, .0f);
+		glVertex3f(-8.0f, 8.0f, .0f);
+		glVertex3f(-7.9f, 8.1f, .0f);
+		glVertex3f(-7.8f, 8.2f, .0f);
+		glVertex3f(-7.7f, 8.3f, .0f);
+		glVertex3f(-7.6f, 8.4f, .0f);
+		glVertex3f(-7.5f, 8.5f, .0f);
+		glVertex3f(-7.4f, 8.6f, .0f);
+		glVertex3f(-7.3f, 8.7f, .0f);
+		glVertex3f(-7.2f, 8.8f, .0f);
+		glVertex3f(-7.1f, 8.9f, .0f);
+		glVertex3f(-7.0f, 9.0f, .0f);//Half
+		glVertex3f(-7.1f, 9.1f, .0f);
+		glVertex3f(-7.2f, 9.2f, .0f);
+		glVertex3f(-7.3f, 9.3f, .0f);
+		glVertex3f(-7.4f, 9.4f, .0f);
+		glVertex3f(-7.5f, 9.5f, .0f);
+		glVertex3f(-7.6f, 9.6f, .0f);
+		glVertex3f(-7.7f, 9.7f, .0f);
+		glVertex3f(-7.8f, 9.8f, .0f);
+		glVertex3f(-7.9f, 9.9f, .0f);
+		glVertex3f(-8.0f, 10.0f, .0f);
+		glVertex3f(-8.1f, 9.9f, .0f);
+		glVertex3f(-8.2f, 9.8f, .0f);
+		glVertex3f(-8.3f, 9.7f, .0f);
+		glVertex3f(-8.4f, 9.6f, .0f);
+		glVertex3f(-8.5f, 9.5f, .0f);
+		glVertex3f(-8.6f, 9.4f, .0f);
+		glVertex3f(-8.7f, 9.3f, .0f);
+		glVertex3f(-8.8f, 9.2f, .0f);
+		glVertex3f(-8.9f, 9.1f, .0f);
+		*/
+		glEnd();
+
 		//Green Floor
 		glBegin(GL_QUADS);
 		glColor3f(0.0f, 0.5f, 0.0f); //Green Color
@@ -205,7 +252,7 @@ int main() {
 		glVertex3f(-12.0f, 0.0f, 0.0f); //Brown Color
 		glVertex3f(-5.0f, 0.0f, 0.0f);
 		glColor3f(1.0f, 1.0f, 1.0f); //White Color
-		glVertex3f(-7.0f, 4.0f, 0.0f);
+		glVertex3f(-7.0f, 4.2f, 0.0f);
 		glEnd();
 		glBegin(GL_TRIANGLES);
 		glColor3f(0.5f, 0.27f, 0.07f);
@@ -213,6 +260,13 @@ int main() {
 		glVertex3f(-2.0f, 0.0f, 0.0f);
 		glColor3f(1.0f, 1.0f, 1.0f); //White Color
 		glVertex3f(-4.0f, 4.0f, 0.0f);
+		glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor3f(0.5f, 0.27f, 0.07f);
+		glVertex3f(-3.5f, 0.0f, 0.0f); //Brown Color
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glColor3f(1.0f, 1.0f, 1.0f); //White Color
+		glVertex3f(-1.5f, 4.5f, 0.0f);
 		glEnd();
 
 
