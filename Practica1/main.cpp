@@ -190,51 +190,64 @@ int main() {
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CCW); //Defines the normal facing player
 
-		//Smile
+		glDisable(GL_CULL_FACE);
+
+		//SMILE
+		//Sun
 		glBegin(GL_POLYGON);
-		glColor3f(0.9f, 0.9f, .0f);
-		/*
+		glColor3f(0.9f, 0.9f, .0f); //Yellow Color
+		//First Half
 		glVertex3f(-9.0f, 9.0f, .0f);
-		glVertex3f(-8.9f, 8.9f, .0f);
-		glVertex3f(-8.8f, 8.8f, .0f);
-		glVertex3f(-8.7f, 8.7f, .0f);
-		glVertex3f(-8.6f, 8.6f, .0f);
-		glVertex3f(-8.5f, 8.5f, .0f);
-		glVertex3f(-8.4f, 8.4f, .0f);
-		glVertex3f(-8.3f, 8.3f, .0f);
-		glVertex3f(-8.2f, 8.2f, .0f);
-		glVertex3f(-8.1f, 8.1f, .0f);
+		glVertex3f(-8.92f, 8.62f, .0f);
+		glVertex3f(-8.71f, 8.29f, .0f);
+		glVertex3f(-8.38f, 8.08f, .0f);
+		//Second Half
 		glVertex3f(-8.0f, 8.0f, .0f);
-		glVertex3f(-7.9f, 8.1f, .0f);
-		glVertex3f(-7.8f, 8.2f, .0f);
-		glVertex3f(-7.7f, 8.3f, .0f);
-		glVertex3f(-7.6f, 8.4f, .0f);
-		glVertex3f(-7.5f, 8.5f, .0f);
-		glVertex3f(-7.4f, 8.6f, .0f);
-		glVertex3f(-7.3f, 8.7f, .0f);
-		glVertex3f(-7.2f, 8.8f, .0f);
-		glVertex3f(-7.1f, 8.9f, .0f);
-		glVertex3f(-7.0f, 9.0f, .0f);//Half
-		glVertex3f(-7.1f, 9.1f, .0f);
-		glVertex3f(-7.2f, 9.2f, .0f);
-		glVertex3f(-7.3f, 9.3f, .0f);
-		glVertex3f(-7.4f, 9.4f, .0f);
-		glVertex3f(-7.5f, 9.5f, .0f);
-		glVertex3f(-7.6f, 9.6f, .0f);
-		glVertex3f(-7.7f, 9.7f, .0f);
-		glVertex3f(-7.8f, 9.8f, .0f);
-		glVertex3f(-7.9f, 9.9f, .0f);
+		glVertex3f(-7.62f, 8.08f, .0f);
+		glVertex3f(-7.29f, 8.29f, .0f);
+		glVertex3f(-7.08f, 8.62f, .0f);
+		//Thrid Half
+		glVertex3f(-7.0f, 9.0f, .0f);
+		glVertex3f(-7.08f, 9.38f, .0f);
+		glVertex3f(-7.29f, 9.71f, .0f);
+		glVertex3f(-7.62f, 9.92f, .0f);
+		//Fourth Half
 		glVertex3f(-8.0f, 10.0f, .0f);
-		glVertex3f(-8.1f, 9.9f, .0f);
-		glVertex3f(-8.2f, 9.8f, .0f);
-		glVertex3f(-8.3f, 9.7f, .0f);
-		glVertex3f(-8.4f, 9.6f, .0f);
-		glVertex3f(-8.5f, 9.5f, .0f);
-		glVertex3f(-8.6f, 9.4f, .0f);
-		glVertex3f(-8.7f, 9.3f, .0f);
-		glVertex3f(-8.8f, 9.2f, .0f);
-		glVertex3f(-8.9f, 9.1f, .0f);
-		*/
+		glVertex3f(-8.38f, 9.92f, .0f);
+		glVertex3f(-8.71f, 9.71f, .0f);
+		glVertex3f(-8.92f, 9.38f, .0f);
+		glEnd();
+
+		//Eyes
+		glPointSize(5.f);
+		glColor3f(.0f, .0f, .0f); //Black Color
+		glBegin(GL_POINTS);
+		glVertex3f(-8.4f, 9.4f, .0f);
+		glVertex3f(-8.4f, 9.3f, .0f);
+		glVertex3f(-7.6f, 9.4f, .0f);
+		glVertex3f(-7.6f, 9.3f, .0f);
+		glEnd();
+
+		//Mouth
+		glLineWidth(5.f);
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(-8.6f, 9.0f, .0f);
+		glVertex3f(-8.6f, 8.8f, .0f);
+		glVertex3f(-8.48f, 8.6f, .0f);
+		glVertex3f(-8.28f, 8.45f, .0f);
+		glVertex3f(-8.f, 8.4f, .0f);
+		glVertex3f(-7.72f, 8.45f, .0f);
+		glVertex3f(-7.52f, 8.6f, .0f);
+		glVertex3f(-7.4f, 8.8f, .0f);
+		glVertex3f(-7.4f, 9.0f, .0f);
+		glEnd();
+		glBegin(GL_LINE_STRIP); //Left Line for Smooth mouse
+		glVertex3f(-8.55f, 8.7f, .0f);
+		glVertex3f(-8.4f, 8.54f, .0f);
+		glEnd();
+		glBegin(GL_LINE_STRIP); //Right Line for Smooth mouse
+		glVertex3f(-7.6f, 8.54f, .0f);
+		glVertex3f(-7.45f, 8.7f, .0f);
 		glEnd();
 
 		//Green Floor
@@ -270,7 +283,6 @@ int main() {
 		glEnd();
 
 
-		glDisable(GL_CULL_FACE);
 
 		//intercambia el framebuffer
 		glfwSwapBuffers(window);
