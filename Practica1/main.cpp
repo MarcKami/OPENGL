@@ -64,7 +64,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//color de fondo
-		glClearColor(0.53, 0.8, 1.0, 1.0); //Azul Cielo
+		glClearColor(0.53, 0.8, 1.0, 1.0); //Sky Blue
 
 		//definir la matriz de proyeccion
 		glMatrixMode(GL_PROJECTION);
@@ -261,28 +261,130 @@ int main() {
 
 		//Draw Mountains
 		glBegin(GL_TRIANGLES);
-		glColor3f(0.5f, 0.27f, 0.07f);
-		glVertex3f(-12.0f, 0.0f, 0.0f); //Brown Color
+		glColor3f(0.5f, 0.27f, 0.07f); //Brown Color
+		glVertex3f(-12.0f, 0.0f, 0.0f);
 		glVertex3f(-5.0f, 0.0f, 0.0f);
 		glColor3f(1.0f, 1.0f, 1.0f); //White Color
 		glVertex3f(-7.0f, 4.2f, 0.0f);
 		glEnd();
 		glBegin(GL_TRIANGLES);
-		glColor3f(0.5f, 0.27f, 0.07f);
-		glVertex3f(-7.5f, 0.0f, 0.0f); //Brown Color
+		glColor3f(0.5f, 0.27f, 0.07f); //Brown Color
+		glVertex3f(-7.5f, 0.0f, 0.0f);
 		glVertex3f(-2.0f, 0.0f, 0.0f);
 		glColor3f(1.0f, 1.0f, 1.0f); //White Color
 		glVertex3f(-4.0f, 4.0f, 0.0f);
 		glEnd();
 		glBegin(GL_TRIANGLES);
-		glColor3f(0.5f, 0.27f, 0.07f);
-		glVertex3f(-3.5f, 0.0f, 0.0f); //Brown Color
+		glColor3f(0.5f, 0.27f, 0.07f); //Brown Color
+		glVertex3f(-3.5f, 0.0f, 0.0f);
 		glVertex3f(0.0f, 0.0f, 0.0f);
 		glColor3f(1.0f, 1.0f, 1.0f); //White Color
 		glVertex3f(-1.5f, 4.5f, 0.0f);
 		glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor3f(0.5f, 0.27f, 0.07f); //Brown Color
+		glVertex3f(2.0f, 0.0f, 0.0f);
+		glVertex3f(6.8f, 0.0f, 0.0f);
+		glColor3f(1.0f, 1.0f, 1.0f); //White Color
+		glVertex3f(5.0f, 5.5f, 0.0f);
+		glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor3f(0.5f, 0.27f, 0.07f); //Brown Color
+		glVertex3f(0.5f, 0.0f, 0.0f);
+		glVertex3f(3.5f, 0.0f, 0.0f);
+		glColor3f(1.0f, 1.0f, 1.0f); //White Color
+		glVertex3f(2.0f, 4.5f, 0.0f);
+		glEnd(); 
+		glBegin(GL_TRIANGLES);
+		glColor3f(0.5f, 0.27f, 0.07f); //Brown Color
+		glVertex3f(8.0f, 0.0f, 0.0f); 
+		glVertex3f(12.0f, 0.0f, 0.0f);
+		glColor3f(1.0f, 1.0f, 1.0f); //White Color
+		glVertex3f(9.7f, 4.2f, 0.0f);
+		glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor3f(0.5f, 0.27f, 0.07f); //Brown Color
+		glVertex3f(5.5f, 0.0f, 0.0f); 
+		glVertex3f(9.8f, 0.0f, 0.0f);
+		glColor3f(1.0f, 1.0f, 1.0f); //White Color
+		glVertex3f(7.0f, 3.5f, 0.0f);
+		glEnd();
 
+		//River
+		glLineWidth(25.0f);
+		glBegin(GL_LINE_STRIP);
+		glColor3f(0.0f, 0.0f, 0.9f); //Dark Blue
+		glVertex3f(0.25f, 0.0f, 0.0f);
+		glVertex3f(0.4f, -0.4f, 0.0f);
+		glVertex3f(0.0f, -1.4f, 0.0f);
+		glVertex3f(0.0f, -1.55f, 0.0f);
+		glEnd();
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(0.0f, -1.4f, 0.0f);
+		glVertex3f(2.5f, -3.4f, 0.0f);
+		glVertex3f(-3.0f, -6.4f, 0.0f);
+		glVertex3f(6.0f, -11.0f, 0.0f);
+		glEnd();
 
+		//Lake
+		glBegin(GL_POLYGON);
+		glVertex3f(-3.0f, -10.0f, 0.0f);
+		glVertex3f(10.0f, -10.f, 0.0f);
+		glVertex3f(10.0f, -6.0f, 0.0f);
+		glVertex3f(7.5f, -5.5f, 0.0f);
+		glVertex3f(5.5f, -5.25f, 0.0f);
+		glVertex3f(5.0f, -5.2f, 0.0f);
+		glVertex3f(2.0f, -6.0f, 0.0f);
+		glVertex3f(0.0f, -7.0f, 0.0f);
+		glVertex3f(-2.0f, -8.5f, 0.0f);
+		glEnd();
+		
+		//Ship
+		glBegin(GL_QUADS);
+		glColor3f(0.39f, 0.26f, 0.13f); //Intense Brown
+		glVertex3f(3.0f, -8.5f, 0.0f);
+		glVertex3f(3.75f, -9.0f, 0.0f);
+		glVertex3f(4.25f, -9.0f, 0.0f);
+		glVertex3f(5.0f, -8.5f, 0.0f);
+		glEnd();
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.0f, 1.0f, 1.0f); //White Color
+		glVertex3f(4.0f, -8.0f, 0.0f);
+		glVertex3f(4.7f, -7.75f, 0.0f);
+		glVertex3f(4.0f, -7.5f, 0.0f);
+		glEnd();
+		glBegin(GL_QUADS);
+		glColor3f(0.39f, 0.26f, 0.13f); //Intense Brown
+		glVertex3f(4.05f, -8.5f, 0.0f);
+		glVertex3f(4.05f, -7.5f, 0.0f);
+		glVertex3f(3.95f, -7.5f, 0.0f);
+		glVertex3f(3.95f, -8.5f, 0.0f);
+		glEnd();
+
+		//FisherMan
+		glLineWidth(4.f);
+		glBegin(GL_LINES); //Stick
+		glColor3f(0.5f, 0.5f, 0.5f); //Gray Color
+		glVertex3f(3.5f, -8.3f, .0f);
+		glVertex3f(2.9f, -7.8f, .0f);
+		glEnd();
+		glLineWidth(8.f);
+		glBegin(GL_LINES); //Body
+		glColor3f(1.0f, 0.0f, 0.0f); //Red Color
+		glVertex3f(3.50f, -8.5f, .0f);
+		glVertex3f(3.50f, -8.1f, .0f);
+		glEnd();
+		glBegin(GL_LINES); //Head
+		glColor3f(0.0f, 0.0f, 0.0f); //Black Color
+		glVertex3f(3.50f, -8.1f, .0f);
+		glVertex3f(3.50f, -7.85f, .0f);
+		glEnd();
+		glLineWidth(2.f);
+		glBegin(GL_LINES); //Rope
+		glColor3f(0.3f, 0.3f, 0.3f); //DimGray Color
+		glVertex3f(2.9f, -7.8f, .0f);
+		glVertex3f(2.9f, -9.0f, .0f);
+		glEnd();
 
 		//intercambia el framebuffer
 		glfwSwapBuffers(window);
