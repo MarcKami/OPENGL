@@ -1,0 +1,24 @@
+#version 330 core
+
+// Input vertex data, different for all executions of this shader.
+layout(location = 0) in vec3 inPos;
+uniform float time;
+out vec3 pos;
+void main(){
+
+    gl_Position.xyz = inPos;
+	
+	if(inPos.y<0.5){
+		if(inPos.x<0){
+			gl_Position.x = inPos.x - abs(sin(time))/2;
+		}else{
+			gl_Position.x = inPos.x + abs(sin(time))/2;
+		}
+	}
+
+	pos = gl_Position.xyz;
+	
+    gl_Position.w = 1.0;
+
+}
+
