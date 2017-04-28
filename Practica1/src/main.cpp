@@ -26,7 +26,7 @@ bool aumentarRotRight, aumentarRotLeft,aumentarUp,aumentarDown;
 
 bool camUp, camDown, camLeft, camRight;
 vec3 camPosVec, camDirVec, camRightVec;
-float camSpeed = 0.15f;
+float camSpeed = 0.005f;
 
 void DrawVao(GLuint programID, GLuint VAO) {
 	//establecer el shader
