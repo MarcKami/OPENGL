@@ -23,7 +23,7 @@ float aumentoRot;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 bool aumentarRotRight, aumentarRotLeft,aumentarUp,aumentarDown;
 
-
+ 
 bool camUp, camDown, camLeft, camRight;
 vec3 camPosVec, camDirVec, camRightVec;
 float camSpeed = 0.005f;
