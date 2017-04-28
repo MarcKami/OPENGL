@@ -25,8 +25,8 @@ bool aumentarRotRight, aumentarRotLeft,aumentarUp,aumentarDown;
 
  
 bool camUp, camDown, camLeft, camRight;
-vec3 camPosVec, camDirVec, camRightVec;
-float camSpeed = 0.005f;
+vec3 camPosVec, camDirVec, camRightVec, camUpVec;
+float camSpeed = 0.01f;
 
 void DrawVao(GLuint programID, GLuint VAO) {
 	//establecer el shader
@@ -54,13 +54,37 @@ mat4 GenerateModelMatrix(vec3 aTranslation, vec3 aRotation, vec3 CubesPosition, 
 	return temp;
 }
 
+mat4 MyLookAt() {
+	mat4 vectors = {
+		camRightVec.x, camUpVec.x, camDirVec.x, 0,
+		camRightVec.y, camUpVec.y, camDirVec.y, 0,
+		camRightVec.z, camUpVec.z, camDirVec.z, 0,
+		0, 0, 0, 1
+	};
+
+	mat4 positions = {
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		-camPosVec.x, -camPosVec.y, -camPosVec.z, 1
+	};
+
+	mat4 look = vectors * positions;
+	return look;
+}
+
+void DoMovement(GLFWwindow* window) {
+	camUp = glfwGetKey(window, 'w');
+	camDown = glfwGetKey(window, 's');
+	camLeft = glfwGetKey(window, 'a');
+	camRight = glfwGetKey(window, 'd');
+}
 
 void main() {
 	mixStuff = 0.0f;
 	//initGLFW
 	if (!glfwInit())
 		exit(EXIT_FAILURE);
-	//TODO
 
 	//set GLFW
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -68,12 +92,8 @@ void main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-
 	//create a window
-	//TODO
 	GLFWwindow* window;
-
-
 
 	window = glfwCreateWindow(WIDTH, HEIGHT, "Primera ventana", nullptr, nullptr);
 	if (!window) {
@@ -84,8 +104,6 @@ void main() {
 	glfwMakeContextCurrent(window);
 
 	//set GLEW and inicializate
-	//TODO
-
 	glewExperimental = GL_TRUE;
 	if (GLEW_OK != glewInit()) {
 		std::cout << "Error al inicializar glew" << std::endl;
@@ -94,21 +112,16 @@ void main() {
 	}
 	int screenWithd, screenHeight;
 	glfwGetFramebufferSize(window, &screenWithd, &screenHeight);
+
 	//set function when callback
-	//TODO
 	glfwSetKeyCallback(window, key_callback);
 
 	//set windows and viewport
-	//TODO
 	glViewport(0, 0, screenWithd, screenHeight);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	//fondo
 	glClearColor(0.0, 0.0, 1.0, 1.0);
-
-
-	//TODO
-
 
 	//cargamos los shader
 
@@ -203,36 +216,8 @@ void main() {
 		vec3(-1.3f,  1.0f, -1.5f)
 	};
 
-
-	//Numbuffer = cantidad de buffers a generar;
-
-	//Borrado
-	//glDeleteBuffers(GLsizei n, const GLuint* ids);
-
-	//-VBO
-
-	//EBO
-
-	//GLuint IndexBufferObject[]{
-	//	0,1,2,
-	//	1,3,0 };
-
-	//GLuint IndexBufferObject[]{
-	//	2,0,3,
-	//	2,1,0
-	//};
-
-
-
-
-	//-EBO
-
-
-	// Definir el EBO
-
 	// Crear los VBO, VAO y EBO
-
-	GLuint VAO, /*EBO,*/ VBO;
+	GLuint VAO, VBO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO); {
 
@@ -241,54 +226,23 @@ void main() {
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		//Se pasan los datos
 		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexBufferObject), VertexBufferObject, GL_DYNAMIC_DRAW);
-
-
-	/*	glGenBuffers(1, &EBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexBufferObject), IndexBufferObject, GL_DYNAMIC_DRAW);
-		*/
-
+		
 		//Propiedades
-
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid*)0);
 		glEnableVertexAttribArray(0);
-		
-		//glVertexAttribPointer(1, 0, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid*)(3 * sizeof(GL_FLOAT)));
-		//glEnableVertexAttribArray(1);
 
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid*)(3 * sizeof(GL_FLOAT)));
 		glEnableVertexAttribArray(2);
 
 		//LIMPIA LOS BUFFERS DE VERTICES
-
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	}glBindVertexArray(0);
 
 
 
-	//reservar memoria para el VAO, VBO y EBO
-
-
-
-	//Establecer el objeto
-	//Declarar el VBO y el EBO
-
-	//Enlazar el buffer con openGL
-
-	//Establecer las propiedades de los vertices
-
-	//liberar el buffer
-
-	//liberar el buffer de vertices
-
-
-	//GLint loc = glGetUniformLocation(shader.Program, "time");
-
-
 	GLuint texture1, texture2;
 
-	//GLint matProjID,matViewID,matModelID;
 	GLint matrizDefID;
 
 	glGenTextures(1, &texture1);
@@ -300,7 +254,6 @@ void main() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	int widthTex, heightTex;
-	//widthTex = heightTex = 512;
 	unsigned char* image = SOIL_load_image("./src/texture.png", &widthTex, &heightTex, 0, SOIL_LOAD_RGB);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, widthTex, heightTex, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
@@ -324,33 +277,31 @@ void main() {
 	aumentoRot = 0.5f;
 	
 	glEnable(GL_DEPTH_TEST);
+	
 	//bucle de dibujado
-
 	camPosVec = vec3(0.f, 0.f, -3.f);
-	camDirVec = (vec3(0.f, 0.f, 0.f) - camPosVec) / glm::length((vec3(0.f, 0.f, 0.f) - camPosVec));
-	camRightVec = glm::cross(camDirVec, vec3(0,1,0) / glm::length(glm::cross(camDirVec, vec3(0, 1, 0))));
+	camDirVec = glm::normalize((vec3(0.f, 0.f, 0.f) - camPosVec));
+	camRightVec = glm::normalize(glm::cross(camDirVec, vec3(0, 1, 0)));
+	camUpVec = glm::normalize(glm::cross(camDirVec, camRightVec));
 
 	while (!glfwWindowShouldClose(window))
 	{
+
+
 		//mat4 finalMatrix; //Modelo
 		mat4 cam; //Vista
 		mat4 proj; //Proyeccion
+		mat4 view1, view2;
 
-
-		//mat4 proj = perspective(60, screenWithd/screenHeight, 0.1f, 100);
-
-
+		GLfloat radio = 8.0f;
+		GLfloat X = sin(glfwGetTime()) * radio;
+		GLfloat Z = cos(glfwGetTime()) * radio;
+				
 		if (gradosRot > 360 || gradosRot < -360) {
 			gradosRot = 0;
 		}
 
-
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
-
-		/*if (loc != -1)
-		{
-		glUniform1f(loc, glfwGetTime());
-		}*/
 
 		glfwPollEvents();
 
@@ -372,18 +323,6 @@ void main() {
 		
 		glUniform1f(mixID, mixStuff);
 
-
-		//glClearColor(0, 1, 0, 0);
-
-		//DrawVao(shader.Program,VAO);
-		//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//glDrawElements(GL_POLYGON, 6, GL_UNSIGNED_INT, 0);
-
-
-		//glBindVertexArray(0);
-
-		//glBindTexture(GL_TEXTURE_2D, texture1);
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
 		glUniform1i(locTex,0);
@@ -393,13 +332,8 @@ void main() {
 		glUniform1i(locTex2, 1);
 		
 		glBindVertexArray(VAO);
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		
-		
-		//pintar con lineas
-		//pintar con triangulos
-
 		if (aumentarRotLeft) {
 			rotacionY-=aumentoRot;
 		}
@@ -426,27 +360,21 @@ void main() {
 		}
 
 		//Cam movement
-		//DoMovement(window);
-
 		if (camUp) {
 			camPosVec += camDirVec * camSpeed;
 		}
+
 		else if (camDown) {
 			camPosVec -= camDirVec * camSpeed;
-
 		}
 
 		if (camRight) {
 			camPosVec += camRightVec * camSpeed;
 		}
+
 		else if (camLeft) {
 			camPosVec -= camRightVec * camSpeed;
 		}
-
-		//matriz = translate(matriz, vec3(0.5f, 0.5f, 0));
-
-
-		//matriz = scale(matriz, vec3(0.5f, -0.5f, 0.0f));
 
 		float FOV = 45.0f;
 
@@ -454,8 +382,26 @@ void main() {
 
 		cam = translate(cam, vec3(camPosVec.x, camPosVec.y, camPosVec.z));
 
-		//glUniformMatrix4fv(matProjID, 1, GL_FALSE, glm::value_ptr(proj));
-		//glUniformMatrix4fv(matViewID, 1, GL_FALSE, glm::value_ptr(cam));
+		view1 = glm::lookAt(camPosVec, camPosVec + camDirVec, camUpVec);
+		view2 = MyLookAt();
+
+		cout << "------MATRIX GLM--------" << endl;
+		cout << view1[0][0] << ", " << view1[1][0] << ", " << view1[2][0] << ", " << view1[3][0] << endl;
+		cout << view1[0][1] << ", " << view1[1][1] << ", " << view1[2][1] << ", " << view1[3][1] << endl;
+		cout << view1[0][2] << ", " << view1[1][2] << ", " << view1[2][2] << ", " << view1[3][2] << endl;
+		cout << view1[0][3] << ", " << view1[1][3] << ", " << view1[2][3] << ", " << view1[3][3] << endl;
+
+		cout << "------MATRIX MyLookAt--------" << endl;
+		cout << view2[0][0] << ", " << view2[1][0] << ", " << view2[2][0] << ", " << view2[3][0] << endl;
+		cout << view2[0][1] << ", " << view2[1][1] << ", " << view2[2][1] << ", " << view2[3][1] << endl;
+		cout << view2[0][2] << ", " << view2[1][2] << ", " << view2[2][2] << ", " << view2[3][2] << endl;
+		cout << view2[0][3] << ", " << view2[1][3] << ", " << view2[2][3] << ", " << view2[3][3] << endl;
+
+		cout << " " << endl;
+		cout << " " << endl;
+		cout << " " << endl;
+		cout << " " << endl;
+		
 
 		for (int i = 0; i < 10; i++) {
 			mat4 matriz;
@@ -543,7 +489,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		fade1 = false;
 	}
 
-
+	
 	if (key == GLFW_KEY_W&&action == GLFW_PRESS) {
 		camUp = true;
 	}
@@ -571,14 +517,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	else if (key == GLFW_KEY_D&&action == GLFW_RELEASE) {
 		camRight = false;
 	}
-
+	
 
 }
 
-void DoMovement(GLFWwindow* window) {
-	camUp = glfwGetKey(window, 'w');
-	camDown = glfwGetKey(window, 's');
-	camLeft = glfwGetKey(window, 'a');
-	camRight = glfwGetKey(window, 'd');
-}
+
 
