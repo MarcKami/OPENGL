@@ -95,12 +95,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\soil\src;C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glm;C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glfw\include;C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Marc\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\soil\src;C:\Users\Marc\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glm;C:\Users\Marc\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glfw\include;C:\Users\Marc\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glew\include;C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\soil\src;C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glm;C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glfw\include;C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\mmartos\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\soil\lib;C:\OpenGL\Glew\lib\Release\Win32;C:\OpenGL\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Marc\Documents\Visual Studio 2015\Projects\OPENGL\Practica1\include\soil\lib;C:\OpenGL\Glew\lib\Release\Win32;C:\OpenGL\GLFW\lib-vc2015;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

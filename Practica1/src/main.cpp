@@ -10,6 +10,8 @@
 #include "..\Shader.h"
 #include <SOIL.h>
 
+
+
 using namespace glm;
 using namespace std;
 const GLint WIDTH = 800, HEIGHT = 600;
@@ -224,32 +226,6 @@ void main() {
 
 	//GLuint programID = LoadShaders("./src/SimpleVertexShader.vertexshader", "./src/SimpleFragmentShader.fragmentshader");
 
-	// Definir el buffer de vertices
-	//Reserva de memoria
-
-	//GLfloat traingleVertex[] = {
-	//-0.5f,-0.5f,0,
-	//0.5f,0.5f,0,
-	//-0.5f,0.5f,0,
-	//0.5f,-0.5f,0
-	//};
-
-	//VBO
-	//GLfloat VertexBufferObject[] = {
-	//	0.5f,  0.5f, 0.0f,  // Top Right
-	//	0.5f, -0.5f, 0.0f,  // Bottom Right
-	//	-0.5f, -0.5f, 0.0f,  // Bottom Left
-	//	-0.5f,  0.5f, 0.0f   // Top Left 
-	//};
-
-	//GLfloat VertexBufferObject[] = {
-	//	// Positions          // Colors           // Texture Coords
-	//	0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // Top Right
-	//	0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // Bottom Right
-	//	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // Bottom Left
-	//	-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // Top Left 
-	//};
-
 	GLfloat VertexBufferObject[] = {
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 		0.5f , -0.5f, -0.5f,  1.0f, 0.0f,
@@ -330,8 +306,6 @@ void main() {
 
 	}glBindVertexArray(0);
 
-
-
 	GLuint texture1, texture2;
 
 	GLint matrizDefID;
@@ -373,7 +347,7 @@ void main() {
 	while (!glfwWindowShouldClose(window))
 	{
 		myCamera.DoMovement(window);
-		//mat4 finalMatrix; //Modelo
+		mat4 model; //Modelo
 		mat4 cam; //Vista
 		mat4 proj; //Proyeccion
 
@@ -414,7 +388,8 @@ void main() {
 
 		proj = perspective(radians(myCamera.GetFOV()), (float)(800 / 600), 0.1f, 100.0f);
 
-		cam = myCamera.LookAt();
+		cam = lookAt(myCamera.cameraPos, myCamera.cameraPos + myCamera.cameraFront, myCamera.cameraUp);
+		//cam = myCamera.LookAt();
 
 		//Cube Rotation
 		if (aumentarRotLeft) rotacionY -= aumentoRot;
