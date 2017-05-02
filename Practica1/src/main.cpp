@@ -74,10 +74,10 @@ mat4 MyLookAt() {
 }
 
 void DoMovement(GLFWwindow* window) {
-	camUp = glfwGetKey(window, 'w');
-	camDown = glfwGetKey(window, 's');
-	camLeft = glfwGetKey(window, 'a');
-	camRight = glfwGetKey(window, 'd');
+	camUp = glfwGetKey(window, GLFW_KEY_W);
+	camDown = glfwGetKey(window, GLFW_KEY_S);
+	camLeft = glfwGetKey(window, GLFW_KEY_A);
+	camRight = glfwGetKey(window, GLFW_KEY_D);
 }
 
 void main() {
@@ -114,7 +114,7 @@ void main() {
 	glfwGetFramebufferSize(window, &screenWithd, &screenHeight);
 
 	//set function when callback
-	glfwSetKeyCallback(window, key_callback);
+	//glfwSetKeyCallback(window, key_callback);
 
 	//set windows and viewport
 	glViewport(0, 0, screenWithd, screenHeight);
@@ -283,11 +283,10 @@ void main() {
 	camDirVec = glm::normalize((vec3(0.f, 0.f, 0.f) - camPosVec));
 	camRightVec = glm::normalize(glm::cross(camDirVec, vec3(0, 1, 0)));
 	camUpVec = glm::normalize(glm::cross(camDirVec, camRightVec));
-
+	
 	while (!glfwWindowShouldClose(window))
 	{
-
-
+		DoMovement(window);
 		//mat4 finalMatrix; //Modelo
 		mat4 cam; //Vista
 		mat4 proj; //Proyeccion
@@ -382,7 +381,8 @@ void main() {
 
 		cam = translate(cam, vec3(camPosVec.x, camPosVec.y, camPosVec.z));
 
-		view1 = glm::lookAt(camPosVec, camPosVec + camDirVec, camUpVec);
+		//LookAt Comprobation
+		/*view1 = glm::lookAt(camPosVec, camPosVec + camDirVec, camUpVec);
 		view2 = MyLookAt();
 
 		cout << "------MATRIX GLM--------" << endl;
@@ -400,7 +400,7 @@ void main() {
 		cout << " " << endl;
 		cout << " " << endl;
 		cout << " " << endl;
-		cout << " " << endl;
+		cout << " " << endl;*/
 		
 
 		for (int i = 0; i < 10; i++) {
@@ -517,8 +517,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	else if (key == GLFW_KEY_D&&action == GLFW_RELEASE) {
 		camRight = false;
 	}
-	
-
 }
 
 
