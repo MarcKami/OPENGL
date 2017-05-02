@@ -13,6 +13,7 @@
 using namespace glm;
 using namespace std;
 const GLint WIDTH = 800, HEIGHT = 600;
+GLfloat lastX = 400, lastY = 300;
 bool WIDEFRAME = false;
 bool paintQuad = false;
 bool fade1 = false;
@@ -21,11 +22,9 @@ float rotacionX,rotacionY = 0.0f;
 float gradosRot = 0;
 float aumentoRot;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xScroll, double yScroll);
 bool aumentarRotRight, aumentarRotLeft,aumentarUp,aumentarDown;
-
- 
-bool camUp, camDown, camLeft, camRight;
-vec3 camPosVec, camDirVec, camRightVec, camUpVec;
 float camSpeed = 0.01f;
 
 void DrawVao(GLuint programID, GLuint VAO) {
@@ -54,11 +53,79 @@ mat4 GenerateModelMatrix(vec3 aTranslation, vec3 aRotation, vec3 CubesPosition, 
 	return temp;
 }
 
-mat4 MyLookAt() {
+class Camera {
+public:
+	vec3 cameraPos;
+	vec3 cameraFront;
+	vec3 cameraRight;
+	vec3 cameraUp;
+	GLfloat Deltatime;
+	GLfloat Lastframe;
+	GLfloat LastMx;
+	GLfloat LastMy;
+	GLfloat Sensitivity;
+	GLboolean firstMouse = true;
+	GLfloat PITCH = 0.f;
+	GLfloat YAW = 0.f;
+	GLfloat FOV;
+	Camera(vec3 position, vec3 direction, GLfloat sensitivity, GLfloat fov);
+	void MouseMove(GLFWwindow* window, double xpos, double ypos);
+	void MouseScroll(GLFWwindow* window, double xScroll, double yScroll);
+	mat4 LookAt();
+	GLfloat GetFOV();
+	void DoMovement(GLFWwindow* window);
+};
+
+Camera::Camera(vec3 position, vec3 direction, GLfloat sensitivity, GLfloat fov) {
+	Lastframe = 0;
+	cameraPos = position;
+	cameraFront = glm::normalize((vec3(0.f, 0.f, 0.f) - cameraPos));
+	cameraRight = glm::normalize(glm::cross(cameraFront, vec3(0, 1, 0)));
+	cameraUp = glm::normalize(glm::cross(cameraFront, cameraRight));
+
+	Sensitivity = sensitivity;
+	FOV = fov;
+
+}
+
+void Camera::MouseMove(GLFWwindow* window, double xpos, double ypos) {
+	if (firstMouse){
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	GLfloat xOffset = xpos - lastX;
+	GLfloat yOffset = lastY - ypos;
+	lastX = xpos;
+	lastY = ypos;
+
+	xOffset *= Sensitivity;
+	yOffset *= Sensitivity;
+
+	YAW += xOffset;
+	PITCH += yOffset;
+
+	PITCH = clamp(PITCH, -89.9f, 89.9f);
+	YAW = glm::mod(YAW, 360.f);
+
+	glm::vec3 front;
+	front.x = cos(radians(YAW)) * cos(radians(PITCH));
+	front.y = sin(radians(PITCH));
+	front.z = sin(radians(YAW)) * cos(radians(PITCH));
+	cameraFront = normalize(front);
+}
+
+void Camera::MouseScroll(GLFWwindow* window, double xScroll, double yScroll) {
+	FOV -= yScroll;
+	FOV = clamp(FOV, 1.f, 45.f);
+}
+
+mat4 Camera::LookAt() {
 	mat4 vectors = {
-		camRightVec.x, camUpVec.x, camDirVec.x, 0,
-		camRightVec.y, camUpVec.y, camDirVec.y, 0,
-		camRightVec.z, camUpVec.z, camDirVec.z, 0,
+		cameraRight.x, cameraUp.x, cameraFront.x, 0,
+		cameraRight.y, cameraUp.y, cameraFront.y, 0,
+		cameraRight.z, cameraUp.z, cameraFront.z, 0,
 		0, 0, 0, 1
 	};
 
@@ -66,19 +133,39 @@ mat4 MyLookAt() {
 		1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
-		-camPosVec.x, -camPosVec.y, -camPosVec.z, 1
+		-cameraPos.x, -cameraPos.y, -cameraPos.z, 1
 	};
 
 	mat4 look = vectors * positions;
 	return look;
 }
 
-void DoMovement(GLFWwindow* window) {
+GLfloat Camera::GetFOV() {
+	return FOV;
+}
+
+void Camera::DoMovement(GLFWwindow* window) {
+	bool camUp, camDown, camLeft, camRight;
+	GLfloat actualFrame = glfwGetTime();
+	Deltatime = actualFrame - Lastframe;
+
+	float cameraSpeed = 3.f * Deltatime;
+	
 	camUp = glfwGetKey(window, GLFW_KEY_W);
 	camDown = glfwGetKey(window, GLFW_KEY_S);
 	camLeft = glfwGetKey(window, GLFW_KEY_A);
 	camRight = glfwGetKey(window, GLFW_KEY_D);
+
+	//Cam movement
+	if (camUp) cameraPos += cameraFront * cameraSpeed;
+	else if (camDown) cameraPos -= cameraFront * cameraSpeed;
+	if (camRight) cameraPos += cameraRight * cameraSpeed;
+	else if (camLeft) cameraPos -= cameraRight * cameraSpeed;
+
+	Lastframe = actualFrame;
 }
+
+Camera myCamera(vec3(0.f, 0.f, -3.f), vec3(0.f, 0.f, 3.f), 0.04f, 45.f);
 
 void main() {
 	mixStuff = 0.0f;
@@ -113,8 +200,12 @@ void main() {
 	int screenWithd, screenHeight;
 	glfwGetFramebufferSize(window, &screenWithd, &screenHeight);
 
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 	//set function when callback
-	//glfwSetKeyCallback(window, key_callback);
+	glfwSetKeyCallback(window, key_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	//set windows and viewport
 	glViewport(0, 0, screenWithd, screenHeight);
@@ -277,20 +368,14 @@ void main() {
 	aumentoRot = 0.5f;
 	
 	glEnable(GL_DEPTH_TEST);
-	
-	//bucle de dibujado
-	camPosVec = vec3(0.f, 0.f, -3.f);
-	camDirVec = glm::normalize((vec3(0.f, 0.f, 0.f) - camPosVec));
-	camRightVec = glm::normalize(glm::cross(camDirVec, vec3(0, 1, 0)));
-	camUpVec = glm::normalize(glm::cross(camDirVec, camRightVec));
-	
+
+	//bucle de dibujado	
 	while (!glfwWindowShouldClose(window))
 	{
-		DoMovement(window);
+		myCamera.DoMovement(window);
 		//mat4 finalMatrix; //Modelo
 		mat4 cam; //Vista
 		mat4 proj; //Proyeccion
-		mat4 view1, view2;
 
 		GLfloat radio = 8.0f;
 		GLfloat X = sin(glfwGetTime()) * radio;
@@ -304,15 +389,10 @@ void main() {
 
 		glfwPollEvents();
 
-		//matModelID = glGetUniformLocation(shader.Program, "matrizModel");
-		//matProjID = glGetUniformLocation(shader.Program, "matrizProj");
-		//matViewID = glGetUniformLocation(shader.Program, "matrizView");
 		matrizDefID = glGetUniformLocation(shader.Program, "matrizDefinitiva");
 
 		//Establecer el color de fondo
-		//glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
 
 		GLint locTex = glGetUniformLocation(shader.Program, "ourTexture");
@@ -332,76 +412,18 @@ void main() {
 		
 		glBindVertexArray(VAO);
 
-		
-		if (aumentarRotLeft) {
-			rotacionY-=aumentoRot;
-		}
-		else if (aumentarRotRight) {
-			rotacionY+= aumentoRot;
-		}
+		proj = perspective(radians(myCamera.GetFOV()), (float)(800 / 600), 0.1f, 100.0f);
 
-		if (aumentarUp) {
-			rotacionX -= aumentoRot;
-		}
-		else if (aumentarDown) {
-			rotacionX += aumentoRot;
-		}
+		cam = myCamera.LookAt();
 
-		if (fade1) {
-			if (mixStuff >= 0&&mixStuff<1) {
-				mixStuff += 0.01f;
-			}
-		}
-		else {
-			if (mixStuff>0.01f) {
-				mixStuff -= 0.01f;
-			}
-		}
+		//Cube Rotation
+		if (aumentarRotLeft) rotacionY -= aumentoRot;
+		else if (aumentarRotRight) rotacionY += aumentoRot;
+		if (aumentarUp) rotacionX -= aumentoRot;
+		else if (aumentarDown) rotacionX += aumentoRot;
 
-		//Cam movement
-		if (camUp) {
-			camPosVec += camDirVec * camSpeed;
-		}
-
-		else if (camDown) {
-			camPosVec -= camDirVec * camSpeed;
-		}
-
-		if (camRight) {
-			camPosVec += camRightVec * camSpeed;
-		}
-
-		else if (camLeft) {
-			camPosVec -= camRightVec * camSpeed;
-		}
-
-		float FOV = 45.0f;
-
-		proj = perspective(FOV, (float)(800/600), 0.1f, 100.0f);
-
-		cam = translate(cam, vec3(camPosVec.x, camPosVec.y, camPosVec.z));
-
-		//LookAt Comprobation
-		/*view1 = glm::lookAt(camPosVec, camPosVec + camDirVec, camUpVec);
-		view2 = MyLookAt();
-
-		cout << "------MATRIX GLM--------" << endl;
-		cout << view1[0][0] << ", " << view1[1][0] << ", " << view1[2][0] << ", " << view1[3][0] << endl;
-		cout << view1[0][1] << ", " << view1[1][1] << ", " << view1[2][1] << ", " << view1[3][1] << endl;
-		cout << view1[0][2] << ", " << view1[1][2] << ", " << view1[2][2] << ", " << view1[3][2] << endl;
-		cout << view1[0][3] << ", " << view1[1][3] << ", " << view1[2][3] << ", " << view1[3][3] << endl;
-
-		cout << "------MATRIX MyLookAt--------" << endl;
-		cout << view2[0][0] << ", " << view2[1][0] << ", " << view2[2][0] << ", " << view2[3][0] << endl;
-		cout << view2[0][1] << ", " << view2[1][1] << ", " << view2[2][1] << ", " << view2[3][1] << endl;
-		cout << view2[0][2] << ", " << view2[1][2] << ", " << view2[2][2] << ", " << view2[3][2] << endl;
-		cout << view2[0][3] << ", " << view2[1][3] << ", " << view2[2][3] << ", " << view2[3][3] << endl;
-
-		cout << " " << endl;
-		cout << " " << endl;
-		cout << " " << endl;
-		cout << " " << endl;*/
-		
+		if (fade1) { if (mixStuff >= 0 && mixStuff<1) { mixStuff += 0.01f; } }
+		else { if (mixStuff>0.01f) { mixStuff -= 0.01f; } }
 
 		for (int i = 0; i < 10; i++) {
 			mat4 matriz;
@@ -489,7 +511,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		fade1 = false;
 	}
 
-	
+	/*
 	if (key == GLFW_KEY_W&&action == GLFW_PRESS) {
 		camUp = true;
 	}
@@ -516,8 +538,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	else if (key == GLFW_KEY_D&&action == GLFW_RELEASE) {
 		camRight = false;
-	}
+	}*/
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+	myCamera.MouseMove(window, xpos, ypos);
+}
+
+void scroll_callback(GLFWwindow* window, double xScroll, double yScroll) {
+	myCamera.MouseScroll(window, xScroll, yScroll);
+}
 
 
